@@ -52,10 +52,6 @@ int readCo2Value() {
   return analogRead(co2Pin);
 }
 
-int readTdsValue() {
-  return analogRead(tdsPin);
-}
-
 float readTurbidityValue() {
   volt = 0;
   for(int i=0; i<800; i++){
@@ -122,7 +118,8 @@ void loop() {
   ph=readPhValue();
   sensors.requestTemperatures(); 
   float temperatureC = sensors.getTempCByIndex(0);
-  
+
+  int co2Value=readCo2Value();
 
   if(isnan(humidity) || isnan(temperature)) 
     return;
@@ -139,6 +136,8 @@ void loop() {
   Serial.print(ph);
   Serial.print(", Water Temperature: ");
   Serial.print(temperatureC);
+  Serial.print(", CO2 Value: ");
+  Serial.print(co2Value);
   Serial.println();
   delay(4000);
 }
