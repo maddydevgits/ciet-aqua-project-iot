@@ -1,7 +1,15 @@
 #include <DHT.h>
 #include <EEPROM.h>
 #include "GravityTDS.h"
- 
+#include <OneWire.h>
+#include <DallasTemperature.h>
+
+const int oneWireBus = 4;     
+
+OneWire oneWire(oneWireBus);
+
+DallasTemperature sensors(&oneWire);
+
 GravityTDS gravityTds;
  
 float tdsValue = 0;
@@ -28,6 +36,7 @@ int buffer_arr[10],temp;
 
 void bsp() {
   Serial.begin(9600);
+  sensors.begin();
   pinMode(turbidityPin,INPUT);
   pinMode(co2Pin,INPUT);
   pinMode(tdsPin,INPUT);
@@ -111,6 +120,9 @@ void loop() {
   tdsValue = gravityTds.getTdsValue(); 
 
   ph=readPhValue();
+  sensors.requestTemperatures(); 
+  float temperatureC = sensors.getTempCByIndex(0);
+  
 
   if(isnan(humidity) || isnan(temperature)) 
     return;
@@ -125,6 +137,8 @@ void loop() {
   Serial.print(tdsValue);
   Serial.print(", PH Value: ");
   Serial.print(ph);
+  Serial.print(", Water Temperature: ");
+  Serial.print(temperatureC);
   Serial.println();
   delay(4000);
 }
