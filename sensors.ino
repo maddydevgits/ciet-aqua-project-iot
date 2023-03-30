@@ -4,7 +4,7 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
-const int oneWireBus = 4;     
+const int oneWireBus = A1;     
 
 OneWire oneWire(oneWireBus);
 
@@ -14,20 +14,20 @@ GravityTDS gravityTds;
  
 float tdsValue = 0;
 
-int dhtPin=23;
+int dhtPin=3;
 DHT dht(dhtPin,DHT11);
 float humidity;
 float temperature;
 
-int turbidityPin=36;
+int turbidityPin=A2;
 float volt;
 float ntu;
 float turbidity;
 float ph;
 
-int co2Pin=34;
-int tdsPin=35;
-int phPin=39;
+int co2Pin=A0;
+int tdsPin=A3;
+int phPin=A4;
 
 float calibration_value = 21.34;
 int phval = 0; 
@@ -124,7 +124,7 @@ void loop() {
   if(isnan(humidity) || isnan(temperature)) 
     return;
     
-  Serial.print("Turbidity Value: ");
+  Serial.print("#Turbidity Value: ");
   Serial.print(turbidity);
   Serial.print(", Humidity Value: ");
   Serial.print(humidity);
@@ -138,6 +138,6 @@ void loop() {
   Serial.print(temperatureC);
   Serial.print(", CO2 Value: ");
   Serial.print(co2Value);
-  Serial.println();
+  Serial.println("~");
   delay(4000);
 }
